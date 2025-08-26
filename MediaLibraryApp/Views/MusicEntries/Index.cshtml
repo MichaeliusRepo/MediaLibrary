@@ -1,0 +1,103 @@
+﻿@model IEnumerable<MediaLibraryApp.Models.MusicEntry>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+
+@if (!SignInManager.IsSignedIn(User))
+{
+	<h1>Login Required</h1>
+	<a>Please log in to access this page.</a>
+}
+else
+{
+
+
+
+	ViewData["Title"] = "Index";
+
+	<h1>Index</h1>
+
+	<p>
+		<a asp-action="Create">Create New</a>
+	</p>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>
+					<a asp-action="Index" asp-route-sortOrder="@ViewData["TitleSortParam"]">Title</a>
+					@* @Html.DisplayNameFor(model => model.Title) *@
+				</th>
+				<th>
+					<a asp-action="Index" asp-route-sortOrder="@ViewData["ArtistSortParam"]">Artist</a>
+					@* @Html.DisplayNameFor(model => model.Artist) *@
+				</th>
+				<!--
+				<th>
+					<a asp-action="Index" asp-route-sortOrder="@ViewData["AlbumSortParam"]">Album</a>
+					@* @Html.DisplayNameFor(model => model.Album) *@
+				</th>
+				-->
+				<th>
+					<a asp-action="Index" asp-route-sortOrder="@ViewData["GenreSortParam"]">Genre</a>
+					@* @Html.DisplayNameFor(model => model.Genre) *@
+				</th>
+				<th>
+					<a asp-action="Index" asp-route-sortOrder="@ViewData["TagSortParam"]">Tag</a>
+					@* @Html.DisplayNameFor(model => model.Tag) *@
+				</th>
+				<th>
+					<a asp-action="Index" asp-route-sortOrder="@ViewData["RatingSortParam"]">Rating</a>
+					@* @Html.DisplayNameFor(model => model.Rating) *@
+				</th>
+				<!--
+
+				<th>
+						<a asp-action="Index" asp-route-sortOrder="@ViewData["CommentSortParam"]">Comment</a>
+						@* @Html.DisplayNameFor(model => model.Comment) *@
+						</th>	-->
+
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model)
+			{
+				<tr>
+					<td>
+						@Html.DisplayFor(modelItem => item.Title)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Artist)
+					</td>
+					<!--
+					<td>
+@* 						@Html.DisplayFor(modelItem => item.Album) *@
+					</td>
+					-->
+					<td>
+						@Html.DisplayFor(modelItem => item.Genre)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Tag)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Rating)
+					</td>
+					<!--
+					<td>
+						@* @Html.DisplayFor(modelItem => item.Comment) *@
+					</td>
+					-->
+
+					<td>
+						<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+						<a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+						<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+
+}

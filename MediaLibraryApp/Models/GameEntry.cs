@@ -1,0 +1,33 @@
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
+
+namespace MediaLibraryApp.Models
+{
+    public class GameEntry
+    {
+        //[Key]
+        public int Id { get; set; }
+
+        [Required]
+        public string Title { get; set; } = string.Empty;
+
+        [Required]
+        public string Developer { get; set; } = string.Empty;
+
+        public string? Publisher { get; set; }
+        public string? Genre { get; set; }
+        public string? Tag { get; set; }
+        [Range(1, 100)]
+        public int? Rating { get; set; }
+        public string? Comment { get; set; }
+
+        public string? UserId { get; set; } = string.Empty;
+
+        /// Four steps to add a table:
+        /// 1. Create a Model Class
+        /// 2. Add DB Set
+        /// 3. add-migration AddMusicEntryTable
+        /// 4. update-database
+        
+    }
+}
