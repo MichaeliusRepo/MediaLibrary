@@ -1,3 +1,4 @@
+using MediaLibraryApp;
 using MediaLibraryApp.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -31,8 +32,32 @@ else
     app.UseHsts();
 }
 
+await DataSeeder.SeedDemoUserAsync(app.Services);
+
 app.UseHttpsRedirection();
 app.UseRouting();
+
+app.UseAuthentication();
+
+app.Use(async (context, next) =>
+{
+    if (!context.User.Identity.IsAuthenticated)
+    {
+        using var scope = context.RequestServices.CreateScope();
+        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+        var signInManager = scope.ServiceProvider.GetRequiredService<SignInManager<IdentityUser>>();
+
+        // Replace with your seeded demo account email
+        var demoUser = await userManager.FindByEmailAsync("test@test.com");
+
+        if (demoUser != null)
+        {
+            await signInManager.SignInAsync(demoUser, isPersistent: false);
+        }
+    }
+
+    await next();
+});
 
 app.UseAuthorization();
 
@@ -40,7 +65,7 @@ app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
+    pattern: "{controller=MusicEntries}/{action=Index}/{id?}")
     .WithStaticAssets();
 
 app.MapRazorPages()
